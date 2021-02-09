@@ -1,72 +1,55 @@
-/// <reference types="cypress" />
+import LoginPage from '../pageObjects/login';
+import HomePage from '../pageObjects/home';
 
 context('Sign in', () => {
-    beforeEach(()=>{
-        cy.visit('https://react-mobx.realworld.io/#/login')
-    })
+    const loginPage = new LoginPage();
+    const homePage = new HomePage(); 
+
+    beforeEach(() => {
+        loginPage.visit();
+    });
 
     describe('Sign in test', () => {
-        it('sign in succesfully with valid email and password', () => { 
-            // enter email
-            cy.get(':nth-child(1) > .form-control')
-                .type('merve123@gmail.com')
-            // enter password
-            cy.get(':nth-child(2) > .form-control')
-                .type('merve123')
-            // click sign in 
-            cy.get('.btn')
-                .click()
-            // assert redirect to home page
-            // validate url
-            cy.url().should('eq', 'https://react-mobx.realworld.io/#/')
-            cy.url().should('include', 'https://react-mobx.realworld.io/#/')
-            // assert "Global feed element on the screen"
-            cy.get('.feed-toggle > .nav > :nth-child(2) > .nav-link')
-                .should('have.text', 'Global Feed')
-            cy.get(':nth-child(4) > .nav-link')
-                .should('have.text', 'merve123')
-        })
+        it('sign in succesfully with valid email and password', () => {
+            loginPage.email()
+                .type('merve123@gmail.com');
+            loginPage.password()
+                .type('merve123');
+            loginPage.signinButton()
+                .click();
+            homePage.validateUrl();
+            homePage.getGlobalFeed()
+                .should('have.text', 'Global Feed');
+            homePage.getUserName()
+                .should('have.text', 'merve123');
+        });
 
         it('sign in fails with an invalid password', () => {
-            // enter email
-            cy.get(':nth-child(1) > .form-control')
-                .type('merve123@gmail.com')
-            // enter password
-            cy.get(':nth-child(2) > .form-control')
-                .type('merve1234')
-            // click sign in 
-            cy.get('.btn')
-                .click()
-            // check error message
-            cy.get('.error-messages > li')
-                .should('have.text', 'email or password is invalid')
-        })
-    
+            loginPage.email()
+                .type('merve123@gmail.com');
+            loginPage.password()
+                .type('merve1234');
+            loginPage.signinButton()
+                .click();
+            loginPage.validateErrorMessage();
+        });
+
         it('gives error when clicking "sign in" button with an empty email input', () => {
-            // enter password
-            cy.get(':nth-child(2) > .form-control')
-                .type('merve123')
-            // click sign in 
-            cy.get('.btn')
-                .click()
-            // check error message
-            cy.get('.error-messages > li')
-                .should('have.text', 'email or password is invalid')
-        })
+            loginPage.password()
+                .type('merve123');
+            loginPage.signinButton()
+                .click();
+            loginPage.validateErrorMessage();
+        });
 
         it('gives error when clicking "sign in" button with single quote password input', () => {
-            // enter email
-            cy.get(':nth-child(1) > .form-control')
-                .type('merve123@gmail.com')
-            // enter password
-            cy.get(':nth-child(2) > .form-control')
-                .type("'")
-            // click sign in 
-            cy.get('.btn')
-                .click()
-            // check error message
-            cy.get('.error-messages > li')
-                .should('have.text', 'email or password is invalid')
-        })
-    })
-})
+            loginPage.email()
+                .type('merve123@gmail.com');
+            loginPage.password()
+                .type("'");
+            loginPage.signinButton()
+                .click();
+            loginPage.validateErrorMessage();
+        });
+    });
+});
