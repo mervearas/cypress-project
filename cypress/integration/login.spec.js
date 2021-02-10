@@ -1,5 +1,5 @@
-import LoginPage from '../pageObjects/login';
-import HomePage from '../pageObjects/home';
+import LoginPage from '../pages/login';
+import HomePage from '../pages/home';
 
 context('Sign in', () => {
     const loginPage = new LoginPage();
@@ -11,12 +11,7 @@ context('Sign in', () => {
 
     describe('Sign in test', () => {
         it('sign in succesfully with valid email and password', () => {
-            loginPage.email()
-                .type('merve123@gmail.com');
-            loginPage.password()
-                .type('merve123');
-            loginPage.signinButton()
-                .click();
+            cy.login('merve123@gmail.com','merve123');
             homePage.validateUrl();
             homePage.getGlobalFeed()
                 .should('have.text', 'Global Feed');
@@ -25,30 +20,17 @@ context('Sign in', () => {
         });
 
         it('sign in fails with an invalid password', () => {
-            loginPage.email()
-                .type('merve123@gmail.com');
-            loginPage.password()
-                .type('merve1234');
-            loginPage.signinButton()
-                .click();
+            cy.login('merve123@gmail.com','merve1234')
             loginPage.validateErrorMessage();
         });
 
         it('gives error when clicking "sign in" button with an empty email input', () => {
-            loginPage.password()
-                .type('merve123');
-            loginPage.signinButton()
-                .click();
+            cy.login('', 'merve123')
             loginPage.validateErrorMessage();
         });
 
         it('gives error when clicking "sign in" button with single quote password input', () => {
-            loginPage.email()
-                .type('merve123@gmail.com');
-            loginPage.password()
-                .type("'");
-            loginPage.signinButton()
-                .click();
+            cy.login('merve123@gmail.com',"'")
             loginPage.validateErrorMessage();
         });
     });
