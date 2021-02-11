@@ -21,7 +21,7 @@ context('Sign in', () => {
         });
     });
 
-    describe('Unseccesful sign in attemps', () => {
+    describe('Unseccesful sign in attempts', () => {
         data.forEach((item) => {
             it('gives error when clicking "sign in" button' + ' ' + item.case, () => {
                 cy.login(item.email, item.password)
