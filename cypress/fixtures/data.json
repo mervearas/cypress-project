@@ -1,0 +1,20 @@
+[
+  {
+    "email": "merve123@gmail.com",
+    "password": "merve1234",
+    "case": "with an invalid password",
+    "errormsg": "email or password is invalid"
+  },
+  {
+    "email": " ",
+    "password": "merve123",
+    "case": "with an empty email input",
+    "errormsg": "email or password is invalid"
+  },
+  {
+    "email": "merve123@gmail.com",
+    "password": "'",
+    "case": "with single quote password input",
+    "errormsg": "email or password is invalid"
+  }
+]

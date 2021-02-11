@@ -14,10 +14,6 @@ class LoginPage {
     signinButton() {
         return cy.get('.btn')
     }
-
-    validateErrorMessage() {
-        return cy.error('email or password is invalid');
-    }
 }
 
 export default LoginPage;

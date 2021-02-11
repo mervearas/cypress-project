@@ -4,7 +4,7 @@ const loginPage = new LoginPage();
 
 Cypress.Commands.add('error', (message) => {
     cy.get('.error-messages > li')
-        .should('have.text', 'email or password is invalid')
+        .should('have.text', message)
 })
 
 Cypress.Commands.add('checkUrl', (url) => {

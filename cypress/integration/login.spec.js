@@ -1,9 +1,10 @@
 import LoginPage from '../pages/login';
 import HomePage from '../pages/home';
+import data from '../fixtures/data.json';
 
 context('Sign in', () => {
     const loginPage = new LoginPage();
-    const homePage = new HomePage(); 
+    const homePage = new HomePage();
 
     beforeEach(() => {
         loginPage.visit();
@@ -11,27 +12,21 @@ context('Sign in', () => {
 
     describe('Sign in test', () => {
         it('sign in succesfully with valid email and password', () => {
-            cy.login('merve123@gmail.com','merve123');
+            cy.login('merve123@gmail.com', 'merve123');
             homePage.validateUrl();
             homePage.getGlobalFeed()
                 .should('have.text', 'Global Feed');
             homePage.getUserName()
                 .should('have.text', 'merve123');
         });
+    });
 
-        it('sign in fails with an invalid password', () => {
-            cy.login('merve123@gmail.com','merve1234')
-            loginPage.validateErrorMessage();
-        });
-
-        it('gives error when clicking "sign in" button with an empty email input', () => {
-            cy.login('', 'merve123')
-            loginPage.validateErrorMessage();
-        });
-
-        it('gives error when clicking "sign in" button with single quote password input', () => {
-            cy.login('merve123@gmail.com',"'")
-            loginPage.validateErrorMessage();
+    describe('Unseccesful sign in attemps', () => {
+        data.forEach((item) => {
+            it('gives error when clicking "sign in" button' + ' ' + item.case, () => {
+                cy.login(item.email, item.password)
+                cy.error(item.errormsg)
+            });
         });
     });
 });
