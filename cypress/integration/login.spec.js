@@ -22,10 +22,10 @@ context('Sign in', () => {
     });
 
     describe('Unseccesful sign in attempts', () => {
-        data.forEach((item) => {
-            it('gives error when clicking "sign in" button' + ' ' + item.case, () => {
-                cy.login(item.email, item.password)
-                cy.error(item.errormsg)
+        data.forEach((testCase) => {
+            it('gives error when clicking "sign in" button' + ' ' + testCase.caseName, () => {
+                cy.login(testCase.email, testCase.password)
+                cy.error(testCase.errormsg)
             });
         });
     });
